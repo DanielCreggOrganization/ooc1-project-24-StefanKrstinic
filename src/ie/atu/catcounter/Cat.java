@@ -1,5 +1,8 @@
 package ie.atu.catcounter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Cat {
    // Instance Variables
    private int catId; // Unique ID
@@ -7,6 +10,12 @@ public class Cat {
    private float weight;
    private String breed;
    private String furColour;
+
+   // Static counter for tracking created cats
+   private static int catCounter = 0;
+
+   // List to store Cat objects
+   private static List<Cat> catRegistry = new ArrayList<>();
 
    // Constructor
    public Cat(int catId, String furColour, String breed, float weight, boolean isMale) {
@@ -21,9 +30,13 @@ public class Cat {
        this.breed = breed;
        this.weight = weight;
        this.isMale = isMale;
+
+       // Increment counter and add to registry
+       catCounter++;
+       catRegistry.add(this);
    }
 
-   // Getter and Setter methods
+   // Getter methods
    public int getCatId() {
        return this.catId;
    }
@@ -40,26 +53,14 @@ public class Cat {
        return this.isMale;
    }
 
-   public void setCatId(int catId) {
-       if (catId <= 0) {
-           throw new IllegalArgumentException("Cat ID must be positive.");
-       }
-       this.catId = catId;
+   // Static method to get the count of created cats
+   public static int getCatCounter() {
+       return catCounter;
    }
-   public void setFurColour(String furColour) {
-       this.furColour = furColour;
-   }
-   public void setBreed(String breed) {
-       this.breed = breed;
-   }
-   public void setWeight(float weight) {
-       if (weight <= 0) {
-           throw new IllegalArgumentException("Weight must be greater than 0.");
-       }
-       this.weight = weight;
-   }
-   public void setIsMale(boolean isMale) {
-       this.isMale = isMale;
+
+   // Static method to get all registered cats
+   public static List<Cat> getCatRegistry() {
+       return catRegistry;
    }
 
    // toString method
