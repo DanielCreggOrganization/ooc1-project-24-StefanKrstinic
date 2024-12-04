@@ -83,3 +83,21 @@ class CatDemo {
         Cat cat1 = new Cat(1, "Black", "Siamese", 4.5f, true);
         Cat cat2 = new Cat(2, "White", "Persian", 3.2f, false);
         Cat cat3 = new Cat(3, "Gray", "Maine Coon", 6.0f, true);
+
+         // Displaying individual cats
+         System.out.println("Individual Cat Details:");
+         System.out.println(cat1);
+         System.out.println(cat2);
+         System.out.println(cat3);
+ 
+         // Displaying total number of cats
+         System.out.println("\nTotal Cats Created: " + Cat.getCatCounter());
+ 
+         // Displaying all registered cats
+         System.out.println("\nAll Registered Cats:");
+         List<Cat> registry = Cat.getCatRegistry();
+         for (Cat cat : registry) {
+             System.out.println(cat);
+         }
+     }
+ }
