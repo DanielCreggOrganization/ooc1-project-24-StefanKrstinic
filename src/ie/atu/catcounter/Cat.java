@@ -75,3 +75,11 @@ public class Cat {
                '}';
    }
 }
+
+// Demonstration Class
+class CatDemo {
+    public static void main(String[] args) {
+        // Creating Cat objects
+        Cat cat1 = new Cat(1, "Black", "Siamese", 4.5f, true);
+        Cat cat2 = new Cat(2, "White", "Persian", 3.2f, false);
+        Cat cat3 = new Cat(3, "Gray", "Maine Coon", 6.0f, true);
