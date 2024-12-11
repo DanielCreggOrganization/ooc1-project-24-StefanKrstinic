@@ -1,4 +1,4 @@
-package ie.atu.catcounter;
+package ie.atu.catmanager;
 
 public class main {
 

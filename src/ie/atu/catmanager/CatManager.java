@@ -1,4 +1,4 @@
-package ie.atu.catcounter;
+package ie.atu.catmanager;
 
 import java.util.Scanner;
 
@@ -16,14 +16,18 @@ class Cat extends Animal {
     private float weight;     // Weight of the cat in kilograms.
     private String breed;     // Breed of the cat.
     private String furColour; // Colour of the cat's fur.
+    private boolean isSpecial; // Whether the cat is special or not.
+    private String specialAbility; // Special ability of the cat if it is special.
 
-    // Constructor: Initializes a new Cat object.
-    public Cat(int catId, String furColour, String breed, float weight, boolean isMale) {
-        this.catId = catId;           // Assign cat ID.
-        this.furColour = furColour;   // Assign fur colour.
-        this.breed = breed;           // Assign breed.
-        this.weight = weight;         // Assign weight.
-        this.isMale = isMale;         // Assign gender.
+    // Constructor: Initializes a new Cat object, with a special ability if special.
+    public Cat(int catId, String furColour, String breed, float weight, boolean isMale, boolean isSpecial, String specialAbility) {
+        this.catId = catId;
+        this.furColour = furColour;
+        this.breed = breed;
+        this.weight = weight;
+        this.isMale = isMale;
+        this.isSpecial = isSpecial;
+        this.specialAbility = isSpecial ? specialAbility : "None"; // If not special, set to "None".
     }
 
     // Getter Methods: Provide read access to private variables.
@@ -32,6 +36,8 @@ class Cat extends Animal {
     public String getBreed() { return breed; }             // Get Breed.
     public float getWeight() { return weight; }            // Get Weight.
     public boolean isMale() { return isMale; }             // Check Gender.
+    public boolean isSpecial() { return isSpecial; }       // Check if the cat is special.
+    public String getSpecialAbility() { return specialAbility; } // Get Special Ability.
 
     // Setter Methods: Allow modifying private variables with validation.
     public void setWeight(float weight) {
@@ -43,40 +49,22 @@ class Cat extends Animal {
     // Overridden Abstract Method: Defines how the Cat sounds.
     @Override
     public void makeSound() {
-        System.out.println("Meow! I am a cat."); // Cat's sound.
+        if (isSpecial) {
+            System.out.println("Purr... I am a special cat with the ability: " + specialAbility); // Special cat's sound.
+        } else {
+            System.out.println("Meow! I am a regular cat."); // Regular cat's sound.
+        }
     }
 
-    // toString Method: Returns a formatted string representing the Cat's details.
+    // toString Method: Returns a formatted string representing the Cat's details, including special abilities.
     @Override
     public String toString() {
         return "Cat{ID=" + catId +
                ", Breed='" + breed + '\'' +
                ", FurColour='" + furColour + '\'' +
                ", Weight=" + weight +
-               ", Male=" + isMale + "}";
-    }
-}
-
-// Child Class: A SpecialCat with additional abilities (Inheritance & Polymorphism).
-class SpecialCat extends Cat {
-    private String specialAbility; // Unique ability for SpecialCat.
-
-    // Constructor: Initializes a SpecialCat object with all attributes.
-    public SpecialCat(int catId, String furColour, String breed, float weight, boolean isMale, String specialAbility) {
-        super(catId, furColour, breed, weight, isMale); // Call Parent Class Constructor.
-        this.specialAbility = specialAbility;          // Assign special ability.
-    }
-
-    // Overridden Method: SpecialCat has a unique sound.
-    @Override
-    public void makeSound() {
-        System.out.println("Purr... I am a special cat with the ability: " + specialAbility); // Special cat's sound.
-    }
-
-    // toString Method: Adds special ability to the output.
-    @Override
-    public String toString() {
-        return super.toString() + ", SpecialAbility='" + specialAbility + "'}";
+               ", Male=" + isMale +
+               ", SpecialAbility='" + specialAbility + "'}";
     }
 }
 
@@ -88,23 +76,35 @@ public class CatManager {
 
     // Method to Add a Cat.
     public static void addCat() {
-        System.out.println("\nEnter Cat Details: "); // Prompt to enter Cat details.
-
-        // Prompt user for Cat details.
+        System.out.println("\nEnter Cat Details: ");
         System.out.print("ID: ");
         int id = scanner.nextInt();
-        scanner.nextLine(); // Consume leftover newline.
+        scanner.nextLine(); // Consume newline.
+
         System.out.print("Fur Colour: ");
         String furColour = scanner.nextLine();
+
         System.out.print("Breed: ");
         String breed = scanner.nextLine();
+
         System.out.print("Weight: ");
         float weight = scanner.nextFloat();
+
         System.out.print("Is Male (true/false): ");
         boolean isMale = scanner.nextBoolean();
 
-        // Add Cat object to the array and increment count.
-        cats[catCount++] = new Cat(id, furColour, breed, weight, isMale);
+        System.out.print("Is this a special cat? (true/false): ");
+        boolean isSpecial = scanner.nextBoolean();
+        scanner.nextLine(); // Consume newline after boolean input.
+
+        String specialAbility = "";
+        if (isSpecial) {
+            System.out.print("Enter the special ability: ");
+            specialAbility = scanner.nextLine();
+        }
+
+        // Create a Cat object and add it to the array.
+        cats[catCount++] = new Cat(id, furColour, breed, weight, isMale, isSpecial, specialAbility);
         System.out.println("Cat added successfully!\n");
     }
 
@@ -126,6 +126,7 @@ public class CatManager {
         for (Cat cat : cats) {
             if (cat != null && cat.getCatId() == id) { // Check for Cat ID match.
                 System.out.println("Found Cat: " + cat); // Print Cat details.
+                cat.makeSound(); // Make the cat produce its sound.
                 return;
             }
         }
@@ -136,7 +137,8 @@ public class CatManager {
     public static void listCats() {
         System.out.println("\nListing All Cats:"); // Header for listing Cats.
         for (int i = 0; i < catCount; i++) {
-            System.out.println(cats[i]); // Print Cat details.
+            System.out.println(cats[i]); // Print Cat details, including special abilities.
+            cats[i].makeSound();         // Trigger the cat's sound, including special abilities.
         }
         System.out.println("Total Cats: " + catCount + "\n"); // Print total number of Cats.
     }
