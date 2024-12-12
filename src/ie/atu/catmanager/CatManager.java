@@ -68,42 +68,12 @@ class Cat extends Animal {
     }
 }
 
-// Main Class: Manages Cats with options to add, delete, find, and list them.
 public class CatManager {
     private static Cat[] cats = new Cat[10]; // Array to store Cat objects (maximum of 10 cats).
     private static int catCount = 0;         // Counter for tracking number of cats.
-    private static Scanner scanner = new Scanner(System.in); // Scanner for user input.
 
     // Method to Add a Cat.
-    public static void addCat() {
-        System.out.println("\nEnter Cat Details: ");
-        System.out.print("ID: ");
-        int id = scanner.nextInt();
-        scanner.nextLine(); // Consume newline.
-
-        System.out.print("Fur Colour: ");
-        String furColour = scanner.nextLine();
-
-        System.out.print("Breed: ");
-        String breed = scanner.nextLine();
-
-        System.out.print("Weight: ");
-        float weight = scanner.nextFloat();
-
-        System.out.print("Is Male (true/false): ");
-        boolean isMale = scanner.nextBoolean();
-
-        System.out.print("Is this a special cat? (true/false): ");
-        boolean isSpecial = scanner.nextBoolean();
-        scanner.nextLine(); // Consume newline after boolean input.
-
-        String specialAbility = "";
-        if (isSpecial) {
-            System.out.print("Enter the special ability: ");
-            specialAbility = scanner.nextLine();
-        }
-
-        // Create a Cat object and add it to the array.
+    public static void addCat(int id, String furColour, String breed, float weight, boolean isMale, boolean isSpecial, String specialAbility) {
         cats[catCount++] = new Cat(id, furColour, breed, weight, isMale, isSpecial, specialAbility);
         System.out.println("Cat added successfully!\n");
     }
@@ -141,45 +111,5 @@ public class CatManager {
             cats[i].makeSound();         // Trigger the cat's sound, including special abilities.
         }
         System.out.println("Total Cats: " + catCount + "\n"); // Print total number of Cats.
-    }
-
-    // Main Menu: Displays options for managing Cats.
-    public static void main(String[] args) {
-        boolean running = true; // Control flag for menu loop.
-
-        while (running) {
-            // Display Menu Options.
-            System.out.println("=== Cat Manager System ===");
-            System.out.println("1. Add Cat");
-            System.out.println("2. Delete Cat");
-            System.out.println("3. Find Cat");
-            System.out.println("4. List All Cats");
-            System.out.println("5. Exit");
-            System.out.print("Choose an option: ");
-
-            int choice = scanner.nextInt(); // Read user's choice.
-
-            // Perform actions based on user input.
-            switch (choice) {
-                case 1: addCat(); break; // Add a Cat.
-                case 2:
-                    System.out.print("Enter Cat ID to delete: ");
-                    int deleteId = scanner.nextInt();
-                    deleteCat(deleteId);
-                    break;
-                case 3:
-                    System.out.print("Enter Cat ID to find: ");
-                    int findId = scanner.nextInt();
-                    findCat(findId);
-                    break;
-                case 4: listCats(); break; // List all Cats.
-                case 5:
-                    running = false; // Exit the program.
-                    System.out.println("Exiting Cat Manager. Goodbye!"); // Exit message.
-                    break;
-                default:
-                    System.out.println("Invalid choice. Try again.\n"); // Handle invalid input.
-            }
-        }
     }
 }
