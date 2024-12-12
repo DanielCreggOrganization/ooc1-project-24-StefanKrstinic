@@ -1,8 +1,8 @@
-Cat Manager System.
+Cat Manager System
 
 Overview:
 
-The Cat Manager System allows users to manage a collection of cats, with features for adding, deleting, finding, and listing cats. The system is designed to allow the management of different types of cats, including SpecialCat subclasses that extend the basic Cat class.
+The Cat Manager System allows users to manage a collection of cats, with features for adding, deleting, finding, and listing cats. The system is designed to allow the management of different types of cats, including special cats with unique abilities. The system's architecture has been updated to separate the core logic from the user interface for better maintainability.
 
 Features:
 
@@ -15,15 +15,20 @@ Features:
 Classes:
 
     Cat: Represents the base cat object with properties like catId, breed, weight, and furColour.
-    SpecialCat: A subclass of Cat, with additional attributes and behavior like specialAbility and an overridden makeSound() method for unique behavior.
+    CatManager: Handles the core logic for managing cats, such as adding, deleting, finding, and listing them.
 
 How to Use:
 
     Run the Program: Compile and execute the program.
-    Menu Interface: Use the displayed menu to select actions (Add, Delete, Find, List, Exit).
+    Menu Interface: Use the displayed menu in the Main class to select actions (Add, Delete, Find, List, Exit).
     Add Cats: Input information for new cats, including breed, weight, gender, and any special ability if applicable.
 
-Sample Output: 
+File Structure:
+
+    Main.java: Contains the user-facing code that interacts with the terminal and manages the menu interface.
+    CatManager.java: Contains all background logic, including the Cat class and methods for managing the cats.
+
+Sample Output:
 
 === Cat Manager System ===
 1. Add Cat
@@ -46,4 +51,5 @@ Cat added: Cat{catId=1, breed='Persian', furColour='White', weight=4.5, isMale=t
 Requirements:
 
     Java 8 or higher.
-    Basic understanding of Object-Oriented Programming principles, including inheritance, polymorphism, and encapsulation.
+    Basic understanding of Object-Oriented Programming principles, including encapsulation, abstraction, and modularity.
+
