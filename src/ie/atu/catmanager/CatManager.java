@@ -1,79 +1,19 @@
 package ie.atu.catmanager;
 
-import java.util.Scanner;
+import java.util.Arrays;
+import java.util.Comparator;
 
-// Abstract Class: Represents the base for all animals.
-abstract class Animal {
-    // Abstract method to be implemented by subclasses.
-    public abstract void makeSound();
-}
-
-// Parent Class: Represents a Cat with its properties and behaviors.
-class Cat extends Animal {
-    // Instance Variables (Encapsulation: Private access).
-    private int catId;        // Unique identifier for the cat.
-    private boolean isMale;   // Gender of the cat (true = male, false = female).
-    private float weight;     // Weight of the cat in kilograms.
-    private String breed;     // Breed of the cat.
-    private String furColour; // Colour of the cat's fur.
-    private boolean isSpecial; // Whether the cat is special or not.
-    private String specialAbility; // Special ability of the cat if it is special.
-
-    // Constructor: Initializes a new Cat object, with a special ability if special.
-    public Cat(int catId, String furColour, String breed, float weight, boolean isMale, boolean isSpecial, String specialAbility) {
-        this.catId = catId;
-        this.furColour = furColour;
-        this.breed = breed;
-        this.weight = weight;
-        this.isMale = isMale;
-        this.isSpecial = isSpecial;
-        this.specialAbility = isSpecial ? specialAbility : "None"; // If not special, set to "None".
-    }
-
-    // Getter Methods: Provide read access to private variables.
-    public int getCatId() { return catId; }                // Get Cat ID.
-    public String getFurColour() { return furColour; }     // Get Fur Colour.
-    public String getBreed() { return breed; }             // Get Breed.
-    public float getWeight() { return weight; }            // Get Weight.
-    public boolean isMale() { return isMale; }             // Check Gender.
-    public boolean isSpecial() { return isSpecial; }       // Check if the cat is special.
-    public String getSpecialAbility() { return specialAbility; } // Get Special Ability.
-
-    // Setter Methods: Allow modifying private variables with validation.
-    public void setWeight(float weight) {
-        if (weight > 0) {              // Validate that weight is positive.
-            this.weight = weight;      // Assign the new weight.
-        }
-    }
-
-    // Overridden Abstract Method: Defines how the Cat sounds.
-    @Override
-    public void makeSound() {
-        if (isSpecial) {
-            System.out.println("Purr... I am a special cat with the ability: " + specialAbility); // Special cat's sound.
-        } else {
-            System.out.println("Meow! I am a regular cat."); // Regular cat's sound.
-        }
-    }
-
-    // toString Method: Returns a formatted string representing the Cat's details, including special abilities.
-    @Override
-    public String toString() {
-        return "Cat{ID=" + catId +
-               ", Breed='" + breed + '\'' +
-               ", FurColour='" + furColour + '\'' +
-               ", Weight=" + weight +
-               ", Male=" + isMale +
-               ", SpecialAbility='" + specialAbility + "'}";
-    }
-}
-
+// Class to manage Cat objects.
 public class CatManager {
     private static Cat[] cats = new Cat[10]; // Array to store Cat objects (maximum of 10 cats).
     private static int catCount = 0;         // Counter for tracking number of cats.
 
     // Method to Add a Cat.
     public static void addCat(int id, String furColour, String breed, float weight, boolean isMale, boolean isSpecial, String specialAbility) {
+        if (catCount >= cats.length) {
+            System.out.println("Cannot add more cats. Maximum limit reached!\n");
+            return;
+        }
         cats[catCount++] = new Cat(id, furColour, breed, weight, isMale, isSpecial, specialAbility);
         System.out.println("Cat added successfully!\n");
     }
@@ -85,6 +25,7 @@ public class CatManager {
                 System.out.println("Deleting Cat: " + cats[i]); // Notify of deletion.
                 cats[i] = cats[--catCount]; // Replace current cat with the last one.
                 cats[catCount] = null;      // Clear the last entry.
+                System.out.println("Cat deleted successfully!\n");
                 return;
             }
         }
@@ -105,11 +46,47 @@ public class CatManager {
 
     // Method to List All Cats.
     public static void listCats() {
-        System.out.println("\nListing All Cats:"); // Header for listing Cats.
-        for (int i = 0; i < catCount; i++) {
-            System.out.println(cats[i]); // Print Cat details, including special abilities.
-            cats[i].makeSound();         // Trigger the cat's sound, including special abilities.
+        if (catCount == 0) {
+            System.out.println("\nNo cats to display.\n");
+            return;
         }
-        System.out.println("Total Cats: " + catCount + "\n"); // Print total number of Cats.
+
+        System.out.println("\nListing All Cats:");
+        for (int i = 0; i < catCount; i++) {
+            System.out.println(cats[i]); // Print Cat details.
+            cats[i].makeSound();         // Trigger the cat's sound.
+        }
+        System.out.println("Total Cats: " + catCount + "\n");
+    }
+
+    // Method to Clear the List of Cats.
+    public static void clearList() {
+        Arrays.fill(cats, null); // Clear all references in the array.
+        catCount = 0;            // Reset counter.
+        System.out.println("All cats have been removed from the list.\n");
+    }
+
+    // Method to Sort Cats by Fur Colour.
+    public static void sortByFurColour() {
+        Arrays.sort(cats, 0, catCount, Comparator.comparing(Cat::getFurColour));
+        System.out.println("Cats have been sorted by Fur Colour.\n");
+    }
+
+    // Method to Sort Cats by Breed.
+    public static void sortByBreed() {
+        Arrays.sort(cats, 0, catCount, Comparator.comparing(Cat::getBreed));
+        System.out.println("Cats have been sorted by Breed.\n");
+    }
+
+    // Method to Update a Cat's Weight.
+    public static void updateCatWeight(int id, float newWeight) {
+        for (Cat cat : cats) {
+            if (cat != null && cat.getCatId() == id) {
+                cat.setWeight(newWeight);
+                System.out.println("Updated weight for Cat ID " + id + ": " + newWeight + " kg\n");
+                return;
+            }
+        }
+        System.out.println("Cat with ID " + id + " not found.\n");
     }
 }
